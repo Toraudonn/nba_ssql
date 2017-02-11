@@ -17,17 +17,17 @@ Explanation of each of the directories in the project.
 
 ## Relationship model
 
-![Alt text](/html/image/nba_logo.png)
-The theme I wanted to work on was the 2015-16 NBA (National Basketball Association) match result which includes Regular and Playoff seasons. 
+![image alt](/html/image/nba_logo.png)  
+The theme I wanted to work on was the 2015-16 NBA (National Basketball Association) match result which includes Regular and Playoff seasons.   
 
-The database relationship model is shown below:
-![Alt text](/html/image/database.png)
+The database relationship model is shown below:  
+![image alt](/html/image/database.png)  
 
 
 ## How to generate html using ssql
 
-Generating html using ssql is _very_ simple. ssql has both GUI and CLI where users could generate all kinds of structure files (such as html).
-![Alt text](/html/image/system_architecture.gif)
+Generating html using ssql is _very_ simple. ssql has both GUI and CLI where users could generate all kinds of structure files (such as html).  
+![image alt ](/html/image/system_architecture.gif)  
 In a .ssql file, use the syntax below.
 ```
 GENERATE <media><TFE>
