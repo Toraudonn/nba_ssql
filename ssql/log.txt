@@ -1,0 +1,44 @@
+[クエリを実行]
+■実行ファイル: /home/md404/ua499416/SQL/team_all.ssql
+
+＜詳細＞
+//Entering SuperSQL System//
+[Parser:Parser] filename = /home/md404/ua499416/SQL/team_all.ssql
+
+GENERATE HTML
+{
+[link(d.title, 'team_division.ssql', d.id)]!
+}
+FROM division d
+[from_where, [[sql_stmt_list, [[sql_stmt, [[factored_select_stmt, [[select_core, [FROM, [table_or_subquery, [[table_name, [[any_name, [division]]]], [table_alias, [[any_name, [d]]]]]]]]]]]]]]]]
+[root, [[operand, [{, [exp, [[d_exp, [[v_exp, [[h_exp, [[operand, [[grouper, [[, [exp, [[d_exp, [[v_exp, [[h_exp, [[operand, [[function, [[function_name, [[any_name, [link]]]], (, [operand, [[table_alias, [[any_name, [d]]]], ., [column_name, [[any_name, [title]]]]]], ,, [operand, [[sl, ['team_division.ssql']]]], ,, [operand, [[table_alias, [[any_name, [d]]]], ., [column_name, [[any_name, [id]]]]]], )]]]]]]]]]]]], ], !]]]]]]]]]]]], }]]]]
+[h_exp, [[operand, [[table_alias, [[any_name, [d]]]], ., [column_name, [[any_name, [title]]]]]], ,, [operand, [[sl, ['team_division.ssql']]]], ,, [operand, [[table_alias, [[any_name, [d]]]], ., [column_name, [[any_name, [id]]]]]]]]
+Schema is [[0, 1, 2]]
+le0 is [HTMLG2, [0, 1, 2]]
+Schema: [[0, 1, 2]]
+
+********** SQL is **********
+SELECT d.title, 'team_division.ssql', d.id FROM division d;
+## DB result ##
+[[Atlantic, team_division.ssql, 1], [Central, team_division.ssql, 2], [Southeast, team_division.ssql, 3], [Northwest, team_division.ssql, 4], [Pacific, team_division.ssql, 5], [Southwest, team_division.ssql, 6]]
+6
+SELECT d.title, 'team_division.ssql', d.id FROM division d;
+File encoding: UTF-8
+ExecTime: 559msec
+// completed normally //
+?query is:GENERATE HTML
+{
+[link(d.title, 'team_division.ssql', d.id)]!
+}
+FROM division d
+?
+?generate is:GENERATE HTML?
+?tfe is:
+{
+[link(d.title, 'team_division.ssql', d.id)]!
+}
+?
+?from is:FROM division d
+?
+結果: 成功
+

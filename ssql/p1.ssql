@@ -1,0 +1,8 @@
+GENERATE HTML
+[s.city,
+d.floor,
+d.name,
+m.name,
+i.name]!
+FROM dept d, employee m, item i, store s
+WHERE d.manager=m.id and d.id=i.dept and s.id=d.store

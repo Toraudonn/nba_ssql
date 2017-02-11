@@ -1,0 +1,30 @@
+FOREACH t.id
+GENERATE HTML
+{
+  [
+    image(t.pict, './image')@{width='200'},
+    {
+      t.title@{width='300'}!
+      t.city@{width='150'}, t.state@{width='100'}, t.country@{width='50'}!
+      d.title@{width='300'}!
+      {'Since: '||t.start_year}@{width='200'}, {t.seasons||' Seasons'}@{width='100'}!
+      {'Total Score: '||t.tot_win||' wins - '||t.tot_lose||' loses'}@{width='300'}!
+      {{'Championships: '||t.champion}@{width='125'}, {'Playoff Appearances: '||t.pa}@{width='175'}}
+    }!
+    {
+      'Season'@{width='120'}, 'Wins'@{width='130'}, 'Loses'@{width='130'}, 'Finish'@{width='120'}!
+      {s.year@{width='120'}, ta.wins@{width='130'}, ta.loses@{width='130'}, ta.finish@{width='120'}}!
+      'Current Players'@{width='500'}!
+      [
+        'Player'@{width='200'}, '#'@{width='50'}, 'Position'@{width='75'}, 'Points'@{width='75'}, 'Salaries'@{width='100'}!
+        [link(p.name@{width='200'}, 'player_detail.ssql', p.id), pa.no@{width='50'}, pa.pos@{width='75'}, pa.pts@{width='75'}, {'$'||pa.salaries}@{width='100'}]!
+      ]!
+    }
+  ]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM team t, team_attributes ta, season s, player p, player_attributes pa, division d
+WHERE s.id=ta.season and pa.season=1 
+and pa.player=p.id and ta.team=t.id 
+and pa.team=t.id
+and d.id=t.division

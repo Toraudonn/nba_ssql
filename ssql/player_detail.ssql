@@ -1,0 +1,17 @@
+FOREACH p.id
+GENERATE HTML
+{
+  [
+    {p.name}!
+    {'Born on '||p.birthday||' in '||p.birth_place}!
+    {'Height: '||p.height||'[cm]', 'Weight: '||p.weight||'[kg]'}!
+    {'Debut: '||p.debut, 'Shoots: '||h.hand}!
+    {
+      'Season'@{width='80'}, 'Name'@{width='150'}, 'Position'@{width='50'}, 'Points'@{width='50'}, 'Minutes Played'@{width='80'}, 'Games/Started'@{width='100'}, 'Field Goals/Attempt'@{width='100'}, 'Free Throws/Attempt'@{width='100'}, 'Salary'@{width='100'}!
+      [s.year@{width='80'}, t.title@{width='150'}, pa.pos@{width='50'}, pa.pts@{width='50'}, pa.mp@{width='80'}, {pa.g||'/'||pa.gs}@{width='100'}, {pa.fg||'/'||pa.fga}@{width='100'}, {pa.ft||'/'||pa.fta}@{width='100'}, {'$'||pa.salaries}@{width='100'}]!
+    }
+  ]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM player p, player_attributes pa, hand h, team t, season s
+WHERE p.id=pa.player and h.id=p.shoots and pa.team=t.id and s.id=pa.season

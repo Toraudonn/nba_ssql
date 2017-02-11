@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SSQL 質問文</title>
+  </head>
+  <body class="body">
+    <center>
+      <h2>conference.ssql</h2>
+    </center>
+    <PRE>
+      GENERATE HTML
+      {
+        [null((asc1) c.id), 
+        {
+          image(c.pict, './image')@{width='100'},      
+          [null((asc1) d.id), link(d.title, 'division.ssql', d.id)@{width='300'}]!
+        }  
+        ]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM conference c, division d
+      WHERE d.conf=c.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各conferenceのdivisionをid順に出すようにした。anchor構文を使ってindex.htmlに戻れるようにした（以下同様）。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>division.ssql</h2>
+    </center>
+    <PRE>
+      FOREACH d.id
+      GENERATE HTML
+      {
+        'Teams in '||d.title!
+        [image(t.pict, './image')@{width='200'}, 
+        link(t.title, 'team_season.ssql', t.id)@{width='200'}]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM division d, team t
+      WHERE t.division=d.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各divisionのteamを出力する。チームロゴとチーム名でチームの詳細をリンクした。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>team_season.ssql</h2>
+    </center>
+    <PRE>
+      FOREACH t.id
+      GENERATE HTML
+      {
+        [
+          image(t.pict, './image')@{width='200'},
+          {
+            t.title@{width='300'}!
+            t.city@{width='150'}, t.state@{width='100'}, t.country@{width='50'}!
+            d.title@{width='300'}!
+            {'Since: '||t.start_year}@{width='200'}, {t.seasons||' Seasons'}@{width='100'}!
+            {'Total Score: '||t.tot_win||' wins - '||t.tot_lose||' loses'}@{width='300'}!
+            {{'Championships: '||t.champion}@{width='125'}, {'Playoff Appearances: '||t.pa}@{width='175'}}
+          }!
+          {
+            'Season'@{width='120'}, 'Wins'@{width='130'}, 'Loses'@{width='130'}, 'Finish'@{width='120'}!
+            {s.year@{width='120'}, ta.wins@{width='130'}, ta.loses@{width='130'}, ta.finish@{width='120'}}!
+            'Current Players'@{width='500'}!
+            [
+              'Player'@{width='200'}, '#'@{width='50'}, 'Position'@{width='75'}, 'Points'@{width='75'}, 'Salaries'@{width='100'}!
+              [link(p.name@{width='200'}, 'player_detail.ssql', p.id), pa.no@{width='50'}, pa.pos@{width='75'}, pa.pts@{width='75'}, {'$'||pa.salaries}@{width='100'}]!
+            ]!
+          }
+        ]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM team t, team_attributes ta, season s, player p, player_attributes pa, division d
+      WHERE s.id=ta.season and pa.season=1 
+      and pa.player=p.id and ta.team=t.id 
+      and pa.team=t.id
+      and d.id=t.division
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各teamの詳細を上に出力し、各teamのplayerの情報を少し表示した。各playerはplayer詳細へのリンクが設置されている。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>player_detail.ssql</h2>
+    </center>
+    <PRE>
+      FOREACH p.id
+      GENERATE HTML
+      {
+        [
+          {p.name}!
+          {'Born on '||p.birthday||' in '||p.birth_place}!
+          {'Height: '||p.height||'[cm]', 'Weight: '||p.weight||'[kg]'}!
+          {'Debut: '||p.debut, 'Shoots: '||h.hand}!
+          {
+            'Season'@{width='80'}, 'Name'@{width='150'}, 'Position'@{width='50'}, 'Points'@{width='50'}, 'Minutes Played'@{width='80'}, 'Games/Started'@{width='100'}, 'Field Goals/Attempt'@{width='100'}, 'Free Throws/Attempt'@{width='100'}, 'Salary'@{width='100'}!
+            [s.year@{width='80'}, t.title@{width='150'}, pa.pos@{width='50'}, pa.pts@{width='50'}, pa.mp@{width='80'}, {pa.g||'/'||pa.gs}@{width='100'}, {pa.fg||'/'||pa.fga}@{width='100'}, {pa.ft||'/'||pa.fta}@{width='100'}, {'$'||pa.salaries}@{width='100'}]!
+          }
+        ]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM player p, player_attributes pa, hand h, team t, season s
+      WHERE p.id=pa.player and h.id=p.shoots and pa.team=t.id and s.id=pa.season
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各playerの詳細情報を上に出力し、各playerのseason情報を以下の表に示した。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>team_all.ssql</h2>
+    </center>
+    <PRE>
+      GENERATE HTML
+      {
+        'All Teams'!
+        'Team'@{width='150'}, 'City'@{width='100'}, 'Wins - Loses'@{width='150'}, 'Players'@{width='50'}!
+        [null((asc1) t.id), 
+        link(t.title, 'team_season.ssql', t.id)@{width='150'}, 
+        t.city@{width='100'}, 
+        {ta.wins||' - '||ta.loses}@{width='150'}, 
+        link('Players', 'players.ssql', t.id)@{width='50'}]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM team t, season s, team_attributes ta
+      WHERE s.id=1 and ta.team=t.id and ta.season=s.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      teamのregular season中の得点情報を出力し、各playerのseason情報へのリンクを示した。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>players.ssql</h2>
+    </center>
+    <PRE>
+      FOREACH t.id
+      GENERATE HTML
+      {
+        t.title!
+        {
+          '#'@{width='30'}, 'Name'@{width='150'}, 'Position'@{width='60'}, 'Points'@{width='50'}, 'Minutes Played'@{width='150'}, 'Games/Started'@{width='150'}, 'Field Goals/Attempt'@{width='150'}, 'Free Throws/Attempt'@{width='150'}, 'Salary'@{width='100'}!
+          [pa.no@{width='30'}, 
+          p.name@{width='150'}, 
+          pa.pos@{width='60'}, 
+          pa.pts@{width='50'}, 
+          pa.mp@{width='150'}, 
+          {pa.g||'/'||pa.gs}@{width='150'}, 
+          {pa.fg||'/'||pa.fga}@{width='150'}, 
+          {pa.ft||'/'||pa.fta}@{width='150'}, 
+          {'$'||pa.salaries}@{width='100'}]!
+        }!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM team t, player p, player_attributes pa, season s
+      WHERE pa.team=t.id and pa.season=s.id and pa.player=p.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各teamのplayerのseason情報をまとめた。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>playoff.ssql</h2>
+    </center>
+    <PRE>
+      GENERATE HTML
+      {
+        'Round'@{width='300'}, 
+        'Winner'@{width='150'}, 
+        'Loser'@{width='150'}, 
+        'Score'@{width='50'}! 
+        [null((asc1) r.id), 
+          r.title@{width='300'}, 
+          link(win.title, 'team_season.ssql', win.id)@{width='150'}, 
+          link(lose.title, 'team_season.ssql', lose.id)@{width='150'}, 
+          link(p.win_score||' - '||p.lose_score, 'games.ssql', p.p_round)@{width='50'}
+        ]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM playoff p, game g, p_round r, team win, team lose, season s
+      WHERE s.id=1 and s.id=p.season 
+      and p.winner=win.id and p.loser=lose.id 
+      and p.p_round=r.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      playoff season中の得点を表にして示した。各playoffの詳細gamesを示すリンク、チーム詳細のリンクを示した。
+    </p>
+    <br />
+    <br />
+    <center>
+      <h2>games.ssql</h2>
+    </center>
+    <PRE>
+      FOREACH p.p_round
+      GENERATE HTML
+      {
+        '#'@{width=30}, 
+        'Home'@{width=150}, 
+        'Winner'@{width=150}, 
+        'Loser'@{width='150'}, 
+        'Score'@{width='150'}!
+        [{(asc1)g.game}@{width='30'}, 
+          h.title@{width='150'}, 
+          link(w.title, 'team_season.ssql', w.id)@{width='150'}, 
+          link(l.title, 'team_season.ssql', l.id)@{width='150'}, 
+          {g.win_score||' - '||g.lose_score}@{width='150'}
+        ]!!
+        a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+      }
+      FROM playoff p, game g, season s, team w, team l, team h
+      WHERE p.season=s.id and p.season=g.season 
+      and p.p_round=g.p_round and g.winner=w.id 
+      and g.loser=l.id and g.home=h.id
+    </PRE>
+    <h3>簡単な説明：</h3>
+    <p>
+      各playoffの詳細情報gamesを表にして示した。チームの詳細情報へのリンクを示した。
+    </p>
+    <br />
+    <br />
+  </body>
+</html>
+  

@@ -1,0 +1,5 @@
+GENERATE HTML
+{
+[d.id, d.name,  d.store, d.floor, d.manager]!
+}
+FROM dept d

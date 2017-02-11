@@ -1,0 +1,5 @@
+GENERATE HTML
+{
+[e.name % {e.salary, e.syear}]!
+}
+FROM employee e

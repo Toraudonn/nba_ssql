@@ -1,0 +1,10 @@
+FOREACH d.id
+GENERATE HTML
+{
+  'Teams in '||d.title!
+  [image(t.pict, './image')@{width='200'}, 
+  link(t.title, 'team_season.ssql', t.id)@{width='200'}]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM division d, team t
+WHERE t.division=d.id

@@ -1,0 +1,5 @@
+GENERATE HTML
+{
+[e.name,  image(e.pict, './picture')@{width='200'}]!
+}
+FROM employee e

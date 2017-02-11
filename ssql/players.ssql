@@ -1,0 +1,20 @@
+FOREACH t.id
+GENERATE HTML
+{
+  t.title!
+  {
+    '#'@{width='30'}, 'Name'@{width='150'}, 'Position'@{width='60'}, 'Points'@{width='50'}, 'Minutes Played'@{width='150'}, 'Games/Started'@{width='150'}, 'Field Goals/Attempt'@{width='150'}, 'Free Throws/Attempt'@{width='150'}, 'Salary'@{width='100'}!
+    [pa.no@{width='30'}, 
+    p.name@{width='150'}, 
+    pa.pos@{width='60'}, 
+    pa.pts@{width='50'}, 
+    pa.mp@{width='150'}, 
+    {pa.g||'/'||pa.gs}@{width='150'}, 
+    {pa.fg||'/'||pa.fga}@{width='150'}, 
+    {pa.ft||'/'||pa.fta}@{width='150'}, 
+    {'$'||pa.salaries}@{width='100'}]!
+  }!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM team t, player p, player_attributes pa, season s
+WHERE pa.team=t.id and pa.season=s.id and pa.player=p.id

@@ -1,0 +1,5 @@
+GENERATE HTML
+{
+[e.name /*@{class='name'}*/, e.salary]!
+}/*@{csssfile='demo.css'}*/
+FROM employee e --, shop s

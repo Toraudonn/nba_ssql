@@ -1,0 +1,13 @@
+GENERATE HTML
+{
+  'All Teams'!
+  'Team'@{width='150'}, 'City'@{width='100'}, 'Wins - Loses'@{width='150'}, 'Players'@{width='50'}!
+  [null((asc1) t.id), 
+  link(t.title, 'team_season.ssql', t.id)@{width='150'}, 
+  t.city@{width='100'}, 
+  {ta.wins||' - '||ta.loses}@{width='150'}, 
+  link('Players', 'players.ssql', t.id)@{width='50'}]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM team t, season s, team_attributes ta
+WHERE s.id=1 and ta.team=t.id and ta.season=s.id

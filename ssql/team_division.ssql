@@ -1,0 +1,8 @@
+
+FOREACH d.id
+GENERATE HTML
+{
+'Team', 'start year', 'score'! [t.title, t.start_year, t.tot_win ||'wins -' || t.tot_lose ||'loses' ]!
+}
+FROM team t, division d
+WHERE t.division=d.id

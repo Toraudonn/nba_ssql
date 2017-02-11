@@ -1,0 +1,9 @@
+GENERATE HTML
+{
+  {'NBA Data for '||s.year}!
+  a('Playoff','http://user.keio.ac.jp/~ua499416/ssql/playoff.html')!
+  a('Conference','http://user.keio.ac.jp/~ua499416/ssql/conference.html')!
+  a('データベースの説明','http://user.keio.ac.jp/~ua499416/ssql/conference.html')
+}
+FROM team t, season s, team_attributes ta
+WHERE s.id=1 and ta.team=t.id and ta.season=s.id

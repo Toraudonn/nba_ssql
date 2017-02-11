@@ -1,0 +1,9 @@
+FOREACH s.id
+GENERATE HTML
+{
+'Round', 'Winner', 'Loser', 'Score'! 
+[null((asc1) r.id), r.title, link(win.title, 'team_season.ssql', win.id), link(lose.title, 'team_season.ssql', lose.id), link(p.win_score||' - '||p.lose_score, 'game.ssql', p.p_round)]!!
+a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM playoff p, game g, p_round r, team win, team lose, season s
+WHERE s.id=p.season and p.winner=win.id and p.loser=lose.id and p.p_round=r.id

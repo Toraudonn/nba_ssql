@@ -1,0 +1,18 @@
+GENERATE HTML
+{
+  'Round'@{width='300'}, 
+  'Winner'@{width='150'}, 
+  'Loser'@{width='150'}, 
+  'Score'@{width='50'}! 
+  [null((asc1) r.id), 
+    r.title@{width='300'}, 
+    link(win.title, 'team_season.ssql', win.id)@{width='150'}, 
+    link(lose.title, 'team_season.ssql', lose.id)@{width='150'}, 
+    link(p.win_score||' - '||p.lose_score, 'games.ssql', p.p_round)@{width='50'}
+  ]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM playoff p, game g, p_round r, team win, team lose, season s
+WHERE s.id=1 and s.id=p.season 
+and p.winner=win.id and p.loser=lose.id 
+and p.p_round=r.id

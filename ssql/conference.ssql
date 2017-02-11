@@ -1,0 +1,12 @@
+GENERATE HTML
+{
+  [null((asc1) c.id), 
+  {
+    image(c.pict, './image')@{width='100'},      
+    [null((asc1) d.id), link(d.title, 'division.ssql', d.id)@{width='300'}]!
+  }  
+  ]!!
+  a('Back','http://user.keio.ac.jp/~ua499416/ssql/index.html')
+}
+FROM conference c, division d
+WHERE d.conf=c.id

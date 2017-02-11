@@ -1,0 +1,5 @@
+GENERATE HTML
+[(asc1) s.city@{width='50'}, [(asc1) d.floor||'F'@{width='30'}, [(asc1) d.name@{width='130', bgcolor='yellow'}, m.name@{auther='100', bgcolor='azure'}, [i.name@{width='120'}],
+]!]!]!@{bgcolor='beige'}
+FROM dept d, employee m, item i, store s
+WHERE d.manager=m.id and d.id=i.dept and s.id=d.store
